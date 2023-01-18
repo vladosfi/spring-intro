@@ -39,14 +39,13 @@ public class ProductEntity {
         return code;
     }
 
+    public ProductEntity() {
+
+    }
+
     public ProductEntity setCode(String code) {
         this.code = code;
         return this;
-    }
-
-
-    public ProductEntity() {
-
     }
 
     public ProductEntity(Long  id, String name, String code) {

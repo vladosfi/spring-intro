@@ -1,6 +1,7 @@
 package com.task.intro.controllers;
 
 import com.task.intro.helper.CSVHelper;
+import com.task.intro.model.dto.ProductDTO;
 import com.task.intro.model.entity.ProductEntity;
 import com.task.intro.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class ProductsController {
     public ProductsController(ProductService productService, CSVHelper csvHelper) {
         this.csvHelper = csvHelper;
         this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        return ResponseEntity.
+                ok(productService.getAllProducts());
     }
 
     @PostMapping("/upload-csv")
