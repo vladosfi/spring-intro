@@ -1,4 +1,4 @@
-package com.task.intro.model;
+package com.task.intro.model.entity;
 
 import javax.persistence.*;
 
@@ -13,6 +13,9 @@ public class ProductEntity {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "code", unique=true)
+    private String code;
 
     public Long  getId() {
         return id;
@@ -41,9 +44,6 @@ public class ProductEntity {
         return this;
     }
 
-    @Column(name = "code")
-    private String code;
-
 
     public ProductEntity() {
 
@@ -53,5 +53,15 @@ public class ProductEntity {
         this.id = id;
         this.name = name;
         this.code = code;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ProductEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                '}';
     }
 }
