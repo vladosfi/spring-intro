@@ -8,23 +8,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
+      <tr v-for="item in items" :key="item.id">
+        <th scope="row">{{ item.id }}</th>
+        <td>{{ item.name }}</td>
+        <td>{{ item.id }}</td>
       </tr>
     </tbody>
   </table>
 
-  <button type="button" class="btn btn-info" @click="getData">Get Products</button>
-
-  <div>
-    <ul>
-      <li v-for="item in items" :key="item.id">
-        {{ item.name }}
-      </li>
-    </ul>
-  </div>
+  <!-- <button type="button" class="btn btn-info" @click="getData">Get Products</button> -->
 </template>
 
 <script>
@@ -37,19 +29,16 @@ export default {
   name: "Table",
   data() {
     return {
-      items: [
-        { name: "dal", id: "15" },
-        { name: "rice", id: "23" },
-      ],
-      getData() {
-        // alert(event.target.tagName);
-        this.$axios.get("users").then((x) => console.log(x.data));
-      }
+      //  getData() {
+      //    this.$axios.get("users").then((x) => console.log(x.data));
+      // }
+      items: {}
     };
     },
   mounted() {
     this.$axios.get('users')
-      .then(x => console.log(x.data))
+      .then(x => this.items = x.data)
+      .catch((error) => console.log(error))
   }
 };
 </script>
