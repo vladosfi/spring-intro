@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -21,6 +22,19 @@ public class ProductsController {
     public ProductsController(ProductService productService, CSVHelper csvHelper) {
         this.csvHelper = csvHelper;
         this.productService = productService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long productId) {
+        Optional<ProductDTO> productOpt = productService.getProductById(productId);
+        if (productOpt.isEmpty()) {
+            return ResponseEntity.
+                    notFound().
+                    build();
+        } else {
+            return ResponseEntity.
+                    ok(productOpt.get());
+        }
     }
 
     @GetMapping
@@ -41,6 +55,27 @@ public class ProductsController {
         } else {
             return ResponseEntity.badRequest().body("Invalid file!");
         }
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO productDTO) {
+
+        ProductDTO updatedProductDTO = this.productService.persistProduct(id, productDTO);
+
+        if (updatedProductDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatedProductDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductDTO> deleteProductById(@PathVariable("id") Long productId) {
+        productService.deleteProductById(productId);
+
+        return ResponseEntity.
+                noContent().
+                build();
     }
 }
 
