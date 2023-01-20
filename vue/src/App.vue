@@ -1,18 +1,16 @@
 <template>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/product">Product</router-link>
-  </div>
+  <NavMenu></NavMenu>
 
   <router-view />
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import NavMenu from './components/NavMenu.vue'
 
 export default {
   name: 'App',
   components: {
+    NavMenu
   }
 }
 </script>
