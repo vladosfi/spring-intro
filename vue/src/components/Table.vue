@@ -9,9 +9,12 @@
     </thead>
     <tbody>
       <tr v-for="item in items" :key="item.id">
-        <th scope="row">{{ item.id }}</th>
+        
+          <th scope="row">{{ item.id }}</th>
         <td>{{ item.name }}</td>
-        <td>{{ item.id }}</td>
+        <td><router-link :to="'/product/' + item.id">{{ item.code }}</router-link></td>
+        
+        
       </tr>
     </tbody>
   </table>
