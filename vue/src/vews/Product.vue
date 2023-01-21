@@ -33,21 +33,19 @@ export default {
   },
   methods: {
     updateProduct(productForm) {
-      console.log("updating", productForm);
+      let that = this;
 
       this.$axios
-        .post("products/" + this.productId, productForm)
-        .then((response) => console.log(response))
+        .put("products/" + this.productId, productForm)
+        .then((response) => this.$router.push("/"))
         .catch((e) => {
           this.errors.push(e);
         });
     },
     createProduct(productForm) {
-      console.log("creating", productForm);
-
       this.$axios
         .post("products/", productForm)
-        .then((response) => console.log(response))
+        .then(this.$router.push("/"))
         .catch((e) => {
           this.errors.push(e);
         });

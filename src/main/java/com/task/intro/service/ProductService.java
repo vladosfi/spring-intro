@@ -45,6 +45,17 @@ public class ProductService {
         }
     }
 
+    public ProductDTO createProduct(ProductDTO productDTO) {
+
+        var newProductEntity = new ProductEntity().
+                setName(productDTO.getName()).
+                setCode(productDTO.getCode());
+
+        this.repository.save(newProductEntity);
+
+        return productDTO;
+    }
+
     public ProductDTO persistProduct(Long id, ProductDTO productDTO) {
 
         Optional<ProductEntity> bookOpt = this.repository.findById(id);

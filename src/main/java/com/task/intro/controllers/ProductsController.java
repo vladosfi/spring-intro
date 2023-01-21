@@ -57,7 +57,7 @@ public class ProductsController {
         }
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO productDTO) {
 
         ProductDTO updatedProductDTO = this.productService.persistProduct(id, productDTO);
@@ -67,6 +67,18 @@ public class ProductsController {
         }
 
         return ResponseEntity.ok(updatedProductDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDTO> CreateProduct(@RequestBody ProductDTO productDTO) {
+
+        ProductDTO createProductDTO = this.productService.createProduct(productDTO);
+
+        if (createProductDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(createProductDTO);
     }
 
     @DeleteMapping("/{id}")
