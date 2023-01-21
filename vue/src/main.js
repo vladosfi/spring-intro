@@ -12,6 +12,6 @@ createApp(App)
   .use(ElementPlus)
   .use(axios, {
     //baseUrl: "https://jsonplaceholder.typicode.com/",
-    baseUrl: "http://localhost:8080/api/",
+    baseUrl: "http://localhost:8081/api/",
   })
   .mount("#app");
