@@ -4,6 +4,7 @@ import com.task.intro.model.dto.ProductDTO;
 import com.task.intro.model.entity.ProductEntity;
 import com.task.intro.repository.ProductRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class ProductService {
 
     public List<ProductDTO> getAllProducts() {
         return repository.
-                findAll().
+                findAll(Sort.by(Sort.Direction.DESC, "id")).
                 stream().
                 map(this::map).
                 collect(Collectors.toList());

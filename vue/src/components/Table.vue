@@ -38,7 +38,7 @@ export default {
       items: {}
     };
     },
-  mounted() {
+  created() {
     this.$axios.get('products')
       .then(x => this.items = x.data)
       .catch((error) => console.log(error))

@@ -33,8 +33,6 @@ export default {
   },
   methods: {
     updateProduct(productForm) {
-      let that = this;
-
       this.$axios
         .put("products/" + this.productId, productForm)
         .then((response) => this.$router.push("/"))

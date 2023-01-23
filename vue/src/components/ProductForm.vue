@@ -22,18 +22,27 @@
           <div class="col-md-auto col-12">
             <button @click.prevent="enableEdit" type="button" class="btn btn-primary">{{ disableEdit ? "Edit" : "Cancel" }}</button>
           </div>
+          <div class="col-md-auto col-12">
+            <button @click.prevent="deleteProduct" :disabled="disableEdit" type="button" class="btn btn-primary">Delete</button>
+          </div>
         </div>
       </div>
     </form>
     <!-- <p>{{ this.product }}</p> -->
   </div>
+<v-layout column align-center>
+  <PopUp />
+</v-layout>
+
 </template>
 
 <script>
+import PopUp from "./PopUp"
 /* eslint-disable */
 export default {
   name: "ProductForm",
-  components: {},
+  components: { PopUp },
+  dialog: false,
   props: {
     productId: {
       type: String,
@@ -47,8 +56,7 @@ export default {
         .catch((e) => {
           this.errors.push(e);
         });
-    }
-    else {
+    } else {
       this.disableEdit = false;
     }
   },
@@ -65,6 +73,14 @@ export default {
   methods: {
     enableEdit() {
       this.disableEdit = !this.disableEdit;
+    },
+    deleteProduct() {
+      this.$axios
+        .delete("products/", productId)
+        .then(this.$router.push("/"))
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
   },
 };

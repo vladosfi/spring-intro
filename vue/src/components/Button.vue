@@ -1,6 +1,11 @@
-
 <template>
-  <button type="button" class="btn btn-info">Get Products</button>
+  <v-app>
+    <v-row class="ma-4 justify-space-around">
+      <v-btn>Button</v-btn>
+      <v-btn color="red">Button</v-btn>
+      <v-btn color="green" dark>Button</v-btn>
+    </v-row>
+  </v-app>
 </template>
 <script>
   //import { ElButton } from 'element-plus'

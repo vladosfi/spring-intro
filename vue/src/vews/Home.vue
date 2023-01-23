@@ -8,14 +8,13 @@
 </template>
 <script>
 //import ElButton from '@/components/HelloWorld.vue'
-import Button from '@/components/Button.vue'
+//import Button from '@/components/ElButton.vue'
 import Table from '@/components/Table.vue'
 
 /* eslint-disable */
 export default {
   name: "Home",
   components: {
-    Button,
     Table
   }
   // ,
