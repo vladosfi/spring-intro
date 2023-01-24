@@ -1,22 +1,42 @@
-
-
 <template>
-<div class="container">
+  <div class="container">
     <Table></Table>
-</div>
+    <ConfirmDlg />
+  </div>
 
 </template>
+
 <script>
-//import ElButton from '@/components/HelloWorld.vue'
-//import Button from '@/components/ElButton.vue'
-import Table from '@/components/Table.vue'
+import Table from "@/components/Table.vue";
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
 
 /* eslint-disable */
 export default {
   name: "Home",
   components: {
-    Table
-  }
+    Table,
+    ConfirmDlg,
+  },
+  data() {
+    return {
+      dialog: true,
+    };
+  },
+  methods: {
+      async delRecord() {
+        if (
+          await this.$refs.confirm.open(
+            "Confirm",
+            "Are you sure you want to delete this record?"
+          )
+        ) {
+          this.deleteRecord();
+        }
+      },
+      deleteRecord() {
+        console.log("Record deleted.");
+      },
+    },
   // ,
   // mounted() {
   //   this.$axios.get('users')

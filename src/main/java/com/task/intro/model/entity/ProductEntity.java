@@ -2,6 +2,7 @@ package com.task.intro.model.entity;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "products")
 public class ProductEntity {

@@ -29,19 +29,18 @@
       </div>
     </form>
     <!-- <p>{{ this.product }}</p> -->
+
+
   </div>
-<v-layout column align-center>
-  <PopUp />
-</v-layout>
+
 
 </template>
 
 <script>
-import PopUp from "./PopUp"
 /* eslint-disable */
 export default {
   name: "ProductForm",
-  components: { PopUp },
+  components: { },
   dialog: false,
   props: {
     productId: {
@@ -76,7 +75,7 @@ export default {
     },
     deleteProduct() {
       this.$axios
-        .delete("products/", productId)
+        .delete("products/" + this.productId)
         .then(this.$router.push("/"))
         .catch((e) => {
           this.errors.push(e);
