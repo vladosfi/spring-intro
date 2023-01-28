@@ -12,35 +12,40 @@
         </div>
         <div class="row align-items-center g-3" v-if="!productId">
           <div class="col-md-auto col-12">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <v-btn type="submit" color="primary"> Add </v-btn>
           </div>
         </div>
         <div class="row align-items-center g-3" v-else>
           <div class="col-md-auto col-12">
-            <button :disabled="disableEdit" type="submit" class="btn btn-primary">Save</button>
+            <v-btn :disabled="disableEdit" color="success" type="submit"> Save </v-btn>
           </div>
           <div class="col-md-auto col-12">
-            <button @click.prevent="enableEdit" type="button" class="btn btn-primary">{{ disableEdit ? "Edit" : "Cancel" }}</button>
+            <v-btn @click.prevent="enableEdit" color="primary"> {{ disableEdit ? "Edit" : "Cancel" }} </v-btn>
           </div>
           <div class="col-md-auto col-12">
-            <button @click.prevent="deleteProduct" :disabled="disableEdit" type="button" class="btn btn-primary">Delete</button>
+            <!-- <button @click.prevent="deleteProduct" :disabled="disableEdit" type="button" class="btn btn-warning">Delete</button> -->
+            <ConfirmDlg :disabled="disableEdit" :dialogContent="this.dialogContent" @agree="deleteProduct($event)" />
           </div>
         </div>
       </div>
     </form>
     <!-- <p>{{ this.product }}</p> -->
-
-
+    <AddProduct></AddProduct>
   </div>
 
 
 </template>
 
 <script>
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
+import AddProduct from "@/components/AddProduct.vue";
 /* eslint-disable */
 export default {
   name: "ProductForm",
-  components: { },
+  components: {
+    ConfirmDlg,
+    AddProduct,
+  },
   dialog: false,
   props: {
     productId: {
@@ -67,19 +72,28 @@ export default {
         name: "",
         code: "",
       },
+      dialogContent: {
+        btnName: "Delete",
+        title: "Confirm delete",
+        text: "Are you sure you want to delete this record?",
+        disableEdit: true,
+      },
     };
   },
   methods: {
     enableEdit() {
       this.disableEdit = !this.disableEdit;
+      this.dialogContent.disableEdit = this.disableEdit;
     },
-    deleteProduct() {
-      this.$axios
-        .delete("products/" + this.productId)
-        .then(this.$router.push("/"))
-        .catch((e) => {
-          this.errors.push(e);
-        });
+    deleteProduct(agree) {
+      if (agree === true) {
+        this.$axios
+          .delete("products/" + this.productId)
+          .then(this.$router.push("/"))
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      }
     },
   },
 };

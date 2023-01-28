@@ -1,18 +1,23 @@
 <template>
-  <NavMenu></NavMenu>
-
-  <router-view />
+  <v-app>
+    <NavMenu></NavMenu>
+    <v-main>
+      <v-container>
+          <router-view />
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import NavMenu from './components/NavMenu.vue'
+import NavMenu from "./components/NavMenu.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    NavMenu
-  }
-}
+    NavMenu,
+  },
+};
 </script>
 
 <style>
@@ -20,8 +25,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  /* text-align: center;
+  color: #2c3e50; */
+  /* margin-top: 60px; */
 }
 </style>

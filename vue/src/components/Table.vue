@@ -9,12 +9,11 @@
     </thead>
     <tbody>
       <tr v-for="item in items" :key="item.id">
-        
-          <th scope="row">{{ item.id }}</th>
+        <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
-        <td><router-link :to="'/product/' + item.id">{{ item.code }}</router-link></td>
-        
-        
+        <td>
+          <router-link :to="'/product/' + item.id">{{ item.code }}</router-link>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -37,11 +36,12 @@ export default {
       // }
       items: {}
     };
-    },
-  created() {
-    this.$axios.get('products')
-      .then(x => this.items = x.data)
-      .catch((error) => console.log(error))
-  }
+  },
+  mounted() {
+    this.$axios
+      .get("products")
+      .then((x) => (this.items = x.data))
+      .catch((error) => console.log(error));
+  },
 };
 </script>

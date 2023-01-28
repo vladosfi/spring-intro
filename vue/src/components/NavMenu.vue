@@ -1,18 +1,6 @@
-<template>
+<!-- <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -29,6 +17,38 @@
       </div>
     </div>
   </nav>
+</template> -->
+
+<template>
+    <v-navigation-drawer v-model="sidebar" app>
+      <v-list>
+        <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-action>{{ item.title }}</v-list-item-action>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-toolbar app>
+      <span class="hidden-sm-and-up">
+        <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
+      </span>
+      <v-toolbar-title>
+        <router-link to="/" style="cursor: pointer">
+          {{ appTitle }}
+        </router-link>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat v-for="item in menuItems" :key="item.title" :to="item.path">
+          <v-icon left dark>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+
 </template>
 
 <script>
@@ -37,12 +57,22 @@ export default {
   props: {
     msg: String,
   },
+  data() {
+    return {
+      appTitle: "Product App",
+      sidebar: false,
+      menuItems: [
+        { title: "Home", path: "/", icon: "mdi-home-circle" },
+        { title: "Add Product", path: "/product", icon: "mdi-plus-circle" },
+      ],
+    };
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  a{
-    text-decoration: none;
-  }
+a {
+  text-decoration: none;
+}
 </style>

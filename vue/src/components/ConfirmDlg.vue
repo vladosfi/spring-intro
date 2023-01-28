@@ -1,26 +1,33 @@
-<template>
-  <v-row justify="center">
-    <v-dialog v-model="dialog" persistent>
-      <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Open Dialog </v-btn>
-      </template>
-      <v-card>
-        <v-card-title class="text-h5"> Use Google's location service? </v-card-title>
-        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green-darken-1" variant="text"  @click.prevent="disagree"> Disagree </v-btn>
-          <v-btn color="green-darken-1" variant="text" @click.prevent="agree"> Agree </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+<template>  
+    <v-row justify="center">
+      <v-dialog v-model="dialog">
+        <template v-slot:activator="{ props }">
+          <v-btn :disabled="dialogContent.disableEdit" color="warning" v-bind="props"> {{dialogContent.btnName}} </v-btn>
+        </template>
+        <v-card class="width-50">
+          <v-card-title class="text-h5"> {{ dialogContent.title }} </v-card-title>
+          <v-card-text>{{ dialogContent.text }} {{ dialogContent.disableEdit }}</v-card-text>
+          <v-card-actions>            
+            <v-spacer></v-spacer>
+            <v-btn color="warning" @click.prevent="agree"> Delete </v-btn>
+            <v-btn color="primary" @click.prevent="disagree"> Cancel </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
 </template>
-@click.prevent="deleteProduct"
 
 <script>
 export default {
   name: "ConfirmDlg",
+  props: {
+    dialogContent: {
+      btnName: String,
+      title: String,
+      text: String,
+      disableEdit: Boolean,
+    },
+  },
   data() {
     return {
       dialog: false,
@@ -29,12 +36,17 @@ export default {
   methods: {
     agree() {
       this.dialog = false;
-      console.log('Agree');
+      this.$emit('agree', true);
     },
     disagree() {
       this.dialog = false;
-      console.log('Disagree');
     },
   },
 };
 </script>
+<style>
+.width-50 {
+  align-self: center;
+  width: 50%;
+}
+</style>

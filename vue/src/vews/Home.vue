@@ -1,9 +1,5 @@
 <template>
-  <div class="container">
     <Table></Table>
-    <ConfirmDlg />
-  </div>
-
 </template>
 
 <script>
@@ -19,24 +15,10 @@ export default {
   },
   data() {
     return {
-      dialog: true,
     };
   },
   methods: {
-      async delRecord() {
-        if (
-          await this.$refs.confirm.open(
-            "Confirm",
-            "Are you sure you want to delete this record?"
-          )
-        ) {
-          this.deleteRecord();
-        }
-      },
-      deleteRecord() {
-        console.log("Record deleted.");
-      },
-    },
+  },
   // ,
   // mounted() {
   //   this.$axios.get('users')
