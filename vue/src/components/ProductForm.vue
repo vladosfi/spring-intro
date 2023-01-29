@@ -38,13 +38,13 @@
 
 <script>
 import ConfirmDlg from "@/components/ConfirmDlg.vue";
-import AddProduct from "@/components/AddProduct.vue";
+import ProductDialog from "@/components/ProductDialog.vue";
 /* eslint-disable */
 export default {
   name: "ProductForm",
   components: {
     ConfirmDlg,
-    AddProduct,
+    ProductDialog,
   },
   dialog: false,
   props: {
@@ -74,7 +74,7 @@ export default {
       },
       dialogContent: {
         btnName: "Delete",
-        title: "Confirm delete",
+        title: "Confirm Delete",
         text: "Are you sure you want to delete this record?",
         disableEdit: true,
       },

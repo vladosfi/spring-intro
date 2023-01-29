@@ -1,8 +1,9 @@
 <template>  
     <v-row justify="center">
-      <v-dialog v-model="dialog">
+      <v-dialog max-width="50%" v-model="dialog">
         <template v-slot:activator="{ props }">
           <v-btn :disabled="dialogContent.disableEdit" color="warning" v-bind="props"> {{dialogContent.btnName}} </v-btn>
+          
         </template>
         <v-card class="width-50">
           <v-card-title class="text-h5"> {{ dialogContent.title }} </v-card-title>
@@ -10,7 +11,7 @@
           <v-card-actions>            
             <v-spacer></v-spacer>
             <v-btn color="warning" @click.prevent="agree"> Delete </v-btn>
-            <v-btn color="primary" @click.prevent="disagree"> Cancel </v-btn>
+            <v-btn color="primary" @click="dialog = false"> Cancel </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -37,16 +38,9 @@ export default {
     agree() {
       this.dialog = false;
       this.$emit('agree', true);
-    },
-    disagree() {
-      this.dialog = false;
-    },
+    }
   },
 };
 </script>
 <style>
-.width-50 {
-  align-self: center;
-  width: 50%;
-}
 </style>

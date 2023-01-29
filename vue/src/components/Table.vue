@@ -1,10 +1,10 @@
 <template>
-  <table class="table">
+  <v-table>
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Product Name</th>
-        <th scope="col">Product Code</th>
+        <th class="text-left">#</th>
+        <th class="text-left">Product Name</th>
+        <th class="text-left">Product Code</th>
       </tr>
     </thead>
     <tbody>
@@ -12,21 +12,24 @@
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>
-          <router-link :to="'/product/' + item.id">{{ item.code }}</router-link>
+          <!-- <router-link :to="'/product/' + item.id">{{ item.code }}</router-link> -->
+          <ProductDialog :dialogContent="dialogContent" :itemCode="item.code" :itemId="item.id" />
         </td>
       </tr>
     </tbody>
-  </table>
+  </v-table>
 
   <!-- <button type="button" class="btn btn-info" @click="getData">Get Products</button> -->
 </template>
 
 <script>
-import { reactive } from "vue";
+import ProductDialog from "@/components/ProductDialog.vue";
 
 export default {
   // eslint-disable-next-line vue/no-unused-components
-  components: { reactive },
+  components: {
+    ProductDialog,
+  },
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Table",
   data() {
@@ -34,7 +37,10 @@ export default {
       //  getData() {
       //    this.$axios.get("users").then((x) => console.log(x.data));
       // }
-      items: {}
+      items: {},
+      dialogContent: {
+        title: "Edit Product",
+      },
     };
   },
   mounted() {
