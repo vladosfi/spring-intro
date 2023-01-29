@@ -52,7 +52,8 @@ public class ProductService {
                 setName(productDTO.getName()).
                 setCode(productDTO.getCode());
 
-        this.repository.save(newProductEntity);
+       this.repository.saveAndFlush(newProductEntity);
+        productDTO.setId(newProductEntity.getId());
 
         return productDTO;
     }
