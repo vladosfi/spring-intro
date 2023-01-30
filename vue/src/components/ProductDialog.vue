@@ -11,7 +11,15 @@
           {{ itemId }}
         </a> -->
         <span id="hoverCell" v-bind="props" v-else>
-          {{ itemCode }}
+        <!-- <v-btn  color="warning" v-bind="props"> {{dialogContent.btnName}} </v-btn> -->
+        <span v-bind="props">
+          <v-tooltip text="Edit" location="top">
+            <template v-slot:activator="{ props }">
+              <v-icon color="blue-darken-2" left dark v-bind="props">mdi-note-edit</v-icon>
+            </template>
+          </v-tooltip>
+        </span>
+
         </span>
       </template>
       <v-card>

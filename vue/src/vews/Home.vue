@@ -1,6 +1,12 @@
 <template>
-    <Table></Table>
-    <ProductDialog :dialogContent="dialogContent" />
+  <div class="d-flex flex-row-reverse">
+      <ProductDialog :dialogContent="dialogContent" />
+  </div>
+  <Table></Table>
+  
+
+  
+
 </template>
 
 <script>
@@ -18,13 +24,12 @@ export default {
   },
   data() {
     return {
-       dialogContent: {
+      dialogContent: {
         title: "Add Product",
       },
     };
   },
-  methods: {
-  },
+  methods: {},
   // ,
   // mounted() {
   //   this.$axios.get('users')
@@ -33,4 +38,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.v-btn {
+  text-align: right;
+}
+
+</style>

@@ -9,34 +9,23 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in items" :key="item.id">
+      <tr class="row-bg" v-for="item in items" :key="item.id">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>
           <!-- <router-link :to="'/product/' + item.id">{{ item.code }}</router-link> -->
-          <ProductDialog :dialogContent="dialogContent" :itemCode="item.code" :itemId="item.id" />
+          <!-- <ProductDialog :dialogContent="dialogContent" :itemCode="item.code" :itemId="item.id" /> -->
+          {{ item.code }}
         </td>
         <td>
-          <v-tooltip text="Edit" location="top">
+          <ProductDialog :dialogContent="productDialogContent" :itemCode="item.code" :itemId="item.id" />
+          <!-- <v-tooltip text="Edit" location="top">
             <template v-slot:activator="{ props }">
               <v-icon color="blue-darken-2" left dark v-bind="props">mdi-note-edit</v-icon>
             </template>
-          </v-tooltip>
+          </v-tooltip> -->
 
-          <v-tooltip text="View" location="top">
-            <template v-slot:activator="{ props }">
-              <v-icon color="orange-darken-2" left dark v-bind="props">mdi-eye-circle</v-icon>
-            </template>
-          </v-tooltip>
-
-          <v-tooltip text="Delete" location="top">
-            <template v-slot:activator="{ props }">
-              <v-icon color="red-darken-2" left dark v-bind="props">mdi-delete</v-icon>
-            </template>
-          </v-tooltip>
-
-          <ConfirmDlg :disabled="disableEdit" :dialogContent="this.dialogContent" @agree="deleteProduct($event)" />
-
+          <ConfirmDlg :itemId="item.id" :dialogContent="this.confirmDialogContent" @agree="deleteProduct($event)" />
         </td>
       </tr>
     </tbody>
@@ -63,7 +52,13 @@ export default {
       //    this.$axios.get("users").then((x) => console.log(x.data));
       // }
       items: {},
-      dialogContent: {
+      itemId: 0,
+      confirmDialogContent: {
+        btnName: "Delete",
+        title: "Confirm Delete Record Id: ",
+        text: "Are you sure you want to delete this record?",
+      },
+      productDialogContent: {
         title: "Edit Product",
       },
     };
@@ -75,10 +70,10 @@ export default {
       .catch((error) => console.log(error));
   },
   methods: {
-    deleteProduct(agree) {
-      if (agree === true) {
+    deleteProduct(recordId) {
+      if (recordId !== 0) {
         this.$axios
-          .delete("products/" + this.productId)
+          .delete("products/" + recordId)
           .then(this.$router.push("/"))
           .catch((e) => {
             this.errors.push(e);
@@ -89,7 +84,20 @@ export default {
 };
 </script>
 <style>
+#app > div > div > main > div > div.v-table.v-theme--light.v-table--density-compact > div > table > thead > tr > th{
+  font-weight:900;
+}
 i {
   cursor: pointer;
+}
+
+.row-bg {
+  /* Set the display to `table-row` because Vuetify makes `flex` */
+  display: table-row;
+}
+
+.row-bg:hover {
+  /* `!important` is necessary here because Vuetify overrides this */
+  background-color: #fafafa; 
 }
 </style>

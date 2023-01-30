@@ -46,22 +46,18 @@
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <ProductDialog :dialogContent="dialogContent" />
       </v-toolbar-items>
     </v-toolbar>
 
 </template>
 
 <script>
-import ProductDialog from "@/components/ProductDialog.vue";
-
 export default {
   name: "NavMenu",
   props: {
     msg: String,
   },
   components: {
-    ProductDialog
   },
   data() {
     return {
@@ -69,7 +65,8 @@ export default {
       sidebar: false,
       menuItems: [
         { title: "Home", path: "/", icon: "mdi-home-circle" },
-        { title: "Add Product", path: "/product", icon: "mdi-plus-circle" },
+        { title: "About", path: "/about", icon: "mdi-information" },
+        //{ title: "Add Product", path: "/product", icon: "mdi-plus-circle" },
       ],
       dialogContent: {
         title: "Add Product",
