@@ -16,7 +16,7 @@
         <v-card-text>{{ dialogContent.text }} </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="warning" @click.prevent="agree"> Delete </v-btn>
+          <v-btn color="error" @click.prevent="agree"> Delete </v-btn>
           <v-btn color="primary" @click="dialog = false"> Cancel </v-btn>
         </v-card-actions>
       </v-card>

@@ -4,13 +4,12 @@
         <!-- <v-btn color="primary" v-bind="props"> Open Dialog </v-btn> -->
 
         <v-btn flat v-bind="props" v-if="!itemId">
-          <v-icon left dark>mdi-plus-circle</v-icon>
           Add Product
         </v-btn>
         <!-- <a :href="" v-bind="props" v-else>
           {{ itemId }}
         </a> -->
-        <span id="hoverCell" v-bind="props" v-else>
+        <span v-bind="props" v-else>
         <!-- <v-btn  color="warning" v-bind="props"> {{dialogContent.btnName}} </v-btn> -->
         <span v-bind="props">
           <v-tooltip text="Edit" location="top">
@@ -107,12 +106,12 @@ export default {
 </script>
 
 <style>
-#hoverCell:hover {
-  text-decoration: dashed;
-  cursor: pointer;
-}
-#hoverCell {
+#app > div > div > main > div > div.d-flex.flex-row-reverse > button > span.v-btn__content{
   color: blue;
+}
+
+#app > div > div > main > div > div.d-flex.flex-row-reverse > button{
+  background-color: #fafafa;
 }
 
 </style>

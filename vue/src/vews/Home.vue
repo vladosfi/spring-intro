@@ -1,12 +1,16 @@
 <template>
-  <div class="d-flex flex-row-reverse">
-      <ProductDialog :dialogContent="dialogContent" />
-  </div>
-  <Table></Table>
-  
+  <v-card>
+    <v-layout>
+      <v-app-bar class="flex text-center" title="Product List">
+              <div class="d-flex flex-row-reverse"><ProductDialog :dialogContent="dialogContent" /></div>
+      </v-app-bar>
 
-  
+      <v-main style="min-height: 300px">
+        <Table></Table>
 
+      </v-main>
+    </v-layout>
+  </v-card>
 </template>
 
 <script>
@@ -39,8 +43,11 @@ export default {
 </script>
 
 <style>
-.v-btn {
+/* .v-btn {
   text-align: right;
-}
+} */
 
+#app > div > div > main > div > div > div.v-layout > header > div > div.d-flex.flex-row-reverse > button{
+  background-color: #fafafa;
+}
 </style>

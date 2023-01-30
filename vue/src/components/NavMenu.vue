@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      appTitle: "Product App",
+      appTitle: "Super Product App",
       sidebar: false,
       menuItems: [
         { title: "Home", path: "/", icon: "mdi-home-circle" },
