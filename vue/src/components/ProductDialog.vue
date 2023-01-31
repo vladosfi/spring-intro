@@ -25,11 +25,18 @@
       <v-card-text>
         <v-container>
           <v-row>
-            <v-col cols="12">
-              <v-text-field v-model="form.name" label="Name*" required></v-text-field>
+            <v-col cols="12" :class="{ error: v$.form.name.$errors.length }">
+              <v-text-field v-model="v$.form.name.$model" label="Name*"></v-text-field>
+              <!-- error message -->
+              <small class="input-errors" v-for="(error, index) of v$.form.name.$errors" :key="index">
+                <div class="error-msg">{{ error.$message }}</div>
+              </small>
             </v-col>
-            <v-col cols="12">
-              <v-text-field v-model="form.code" label="Product Code*" hint="numbers only" required></v-text-field>
+            <v-col cols="12" :class="{ error: v$.form.code.$errors.length }">
+              <v-text-field v-model="v$.form.code.$model" label="Product Code*" hint="Enter code"></v-text-field>
+              <small class="input-errors" v-for="(error, index) of v$.form.code.$errors" :key="index">
+                <div class="error-msg">{{ error.$message }}</div>
+              </small>
             </v-col>
           </v-row>
         </v-container>
@@ -38,16 +45,16 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
+        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import useVuelidate from '@vuelidate/core'
-import { required, minLength } from '@vuelidate/validators'
+import useVuelidate from "@vuelidate/core";
+import { required, minLength, numeric, maxLength } from "@vuelidate/validators";
 
 export default {
   name: "ProductDialog",
@@ -60,8 +67,8 @@ export default {
     itemId: Number,
     itemCode: String,
   },
-    setup () {
-    return { v$: useVuelidate() }
+  setup() {
+    return { v$: useVuelidate() };
   },
   data: () => ({
     dialog: false,
@@ -77,10 +84,13 @@ export default {
         name: {
           required,
           min: minLength(3),
+          max: maxLength(50),
         },
         code: {
           required,
           min: minLength(10),
+          max: maxLength(10),
+          numeric,
         },
       },
     };
