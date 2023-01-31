@@ -1,15 +1,13 @@
 <template>
-    <v-dialog max-width="50%" v-model="dialog">
-      <template v-slot:activator="{ props }">
-        <!-- <v-btn color="primary" v-bind="props"> Open Dialog </v-btn> -->
+  <v-dialog max-width="50%" v-model="dialog">
+    <template v-slot:activator="{ props }">
+      <!-- <v-btn color="primary" v-bind="props"> Open Dialog </v-btn> -->
 
-        <v-btn flat v-bind="props" v-if="!itemId">
-          Add Product
-        </v-btn>
-        <!-- <a :href="" v-bind="props" v-else>
+      <v-btn flat v-bind="props" v-if="!itemId"> Add Product </v-btn>
+      <!-- <a :href="" v-bind="props" v-else>
           {{ itemId }}
         </a> -->
-        <span v-bind="props" v-else>
+      <span v-bind="props" v-else>
         <!-- <v-btn  color="warning" v-bind="props"> {{dialogContent.btnName}} </v-btn> -->
         <span v-bind="props">
           <v-tooltip text="Edit" location="top">
@@ -18,37 +16,39 @@
             </template>
           </v-tooltip>
         </span>
-
-        </span>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">{{ dialogContent.title }}</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="form.name" label="Name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="form.code" label="Product Code*" hint="numbers only" required></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>          
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      </span>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="text-h5">{{ dialogContent.title }}</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="form.name" label="Name*" required></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field v-model="form.code" label="Product Code*" hint="numbers only" required></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+        <small>*indicates required field</small>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
+import { required, minLength } from '@vuelidate/validators'
+
 export default {
   name: "ProductDialog",
   props: {
@@ -60,6 +60,9 @@ export default {
     itemId: Number,
     itemCode: String,
   },
+    setup () {
+    return { v$: useVuelidate() }
+  },
   data: () => ({
     dialog: false,
     form: {
@@ -68,6 +71,20 @@ export default {
       code: "",
     },
   }),
+  validations() {
+    return {
+      form: {
+        name: {
+          required,
+          min: minLength(3),
+        },
+        code: {
+          required,
+          min: minLength(10),
+        },
+      },
+    };
+  },
   methods: {
     createProduct() {
       this.$axios
@@ -106,12 +123,11 @@ export default {
 </script>
 
 <style>
-#app > div > div > main > div > div.d-flex.flex-row-reverse > button > span.v-btn__content{
+#app > div > div > main > div > div.d-flex.flex-row-reverse > button > span.v-btn__content {
   color: blue;
 }
 
-#app > div > div > main > div > div.d-flex.flex-row-reverse > button{
+#app > div > div > main > div > div.d-flex.flex-row-reverse > button {
   background-color: #fafafa;
 }
-
 </style>
