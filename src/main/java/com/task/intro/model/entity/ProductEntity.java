@@ -1,7 +1,7 @@
 package com.task.intro.model.entity;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -12,10 +12,12 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 50)
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 
     @Column(name = "code", unique=true)
+    @Size(min = 10, max = 10, message = "Code must be 10 characters long")
     private String code;
 
     public Long  getId() {

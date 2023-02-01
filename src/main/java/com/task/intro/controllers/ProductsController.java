@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +71,7 @@ public class ProductsController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> CreateProduct(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> CreateProduct(@Valid @RequestBody ProductDTO productDTO) {
 
         ProductDTO createProductDTO = this.productService.createProduct(productDTO);
 
