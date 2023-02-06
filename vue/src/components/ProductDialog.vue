@@ -45,7 +45,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn  color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
         <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
@@ -102,9 +102,10 @@ export default {
         .then((result) => console.log(result.data))
         .then((this.dialog = false))
         .then(this.$router.push("/"))
-        .catch((e) => {
-          this.errors.push(e);
-        });
+        // .catch((e) => {
+        //   this.errors.push(e);
+        // })
+        ;
     },
     updateProduct() {
       this.$axios
