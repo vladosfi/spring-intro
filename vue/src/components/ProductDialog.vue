@@ -110,7 +110,7 @@ export default {
     updateProduct() {
       this.$axios
         .put("products/" + this.form.id, this.form)
-        .then((result) => console.log(result.data))
+        //.then((result) => console.log(result.data))
         .then((this.dialog = false))
         .then(() => this.$router.push("/"))
         .catch((e) => {
