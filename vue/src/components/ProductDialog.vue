@@ -45,7 +45,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn  color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
         <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
@@ -55,6 +55,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, numeric, maxLength } from "@vuelidate/validators";
+import { useProductStore } from "../stores/ProductStore";
 
 export default {
   name: "ProductDialog",
@@ -68,7 +69,8 @@ export default {
     itemCode: String,
   },
   setup() {
-    return { v$: useVuelidate() };
+    const productStore = useProductStore();
+    return { v$: useVuelidate(), productStore };
   },
   data: () => ({
     dialog: false,
@@ -99,34 +101,25 @@ export default {
     createProduct() {
       this.$axios
         .post("products/", this.form)
-        .then((result) => console.log(result.data))
+        .then((result) => this.productStore.createProduct(result.data))
         .then((this.dialog = false))
-        .then(this.$router.push("/"))
-        // .catch((e) => {
-        //   this.errors.push(e);
-        // })
-        ;
+        .then(this.$router.push("/"));
+      // .catch((e) => {
+      //   this.errors.push(e);
+      // })
     },
     updateProduct() {
       this.$axios
         .put("products/" + this.form.id, this.form)
-        //.then((result) => console.log(result.data))
+        .then((result) => this.productStore.updateProduct(result.data))
         .then((this.dialog = false))
-        .then(() => this.$router.push("/"))
-        .catch((e) => {
-          this.errors.push(e);
-        });
+        .then(() => this.$router.push("/"));
     },
   },
   watch: {
     dialog(visible) {
       if (this.itemId && visible) {
-        this.$axios
-          .get("products/" + this.itemId)
-          .then((x) => (this.form = x.data))
-          .catch((e) => {
-            this.errors.push(e);
-          });
+        this.$axios.get("products/" + this.itemId).then((x) => (this.form = x.data));
       }
     },
   },

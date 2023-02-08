@@ -19,21 +19,14 @@ export default {
     NavMenu,
   },
   setup() {
-    // Get toast interface
     const toast = useToast();
-    // // or with options
-    // toast.success("My toast content", {
-    //   timeout: 2000
-    // });
-    // These options will override the options defined in the "app.use" plugin registration for this specific toast
-
     // Make it available inside methods
     return { toast };
   },
   methods: {
     testToast(text) {
-      //this.toast("I'm a toast1111!"); 
-      this.toast.error(text); 
+      //this.toast("I'm a toast1111!");
+      this.toast.error(text);
     },
   },
   mounted() {
@@ -75,38 +68,22 @@ export default {
         // Do something with response error
         if (error.response?.status) {
           //loader.hide(); //hiding loader on error
-          //Handling different error status using Switch case
           switch (error.response?.status) {
             case 400:
-              // this.$swal(error.response.data.message, {
-              //   closeOnClickOutside: false,
-              // }); //showing Swal Alert
-              this.testToast(error.response.data.message);
+              //this.testToast(error.response.data.message);
+              this.testToast("Something went wrong!");
               break;
             case 401:
-              // //logout user
-              // this.$swal(error?.response?.data?.message, {
-              //   closeOnClickOutside: false,
-              // }); //showing Swal Alert
-              this.testToast(error.response.data.message);
+              this.testToast("Something went wrong!");
               break;
             case 403:
-              // this.$swal(error.response.data.message, {
-              //   closeOnClickOutside: false,
-              // }); //showing Swal Alert
-              this.testToast(error.response.data.message);
+              this.testToast("Something went wrong!");
               break;
             case 404:
-              // this.$swal(error.response.data.message, {
-              //   closeOnClickOutside: false,
-              // }); //showing Swal Alert
-              this.testToast(error.response.data.message);
+              this.testToast("Something went wrong!");
               break;
             case 500:
-              // this.$swal(error.response.data.message, {
-              //   closeOnClickOutside: false,
-              // }); //showing Swal Alert
-              this.testToast(error.response.data.message);
+              this.testToast("Something went wrong!");
           }
         }
       }

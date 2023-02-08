@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="row-bg" v-for="item in items" :key="item.id">
+      <tr class="row-bg" v-for="item in productStore.products" :key="item.id">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>
@@ -28,8 +28,18 @@
           <ConfirmDlg :itemId="item.id" :dialogContent="this.confirmDialogContent" @agree="deleteProduct($event)" />
         </td>
       </tr>
+
+      <tr class="row-bg bold">
+        <td :colspan="4" class="font-weight-bold text-right">Count: {{ productStore.count }}</td>
+      </tr>
     </tbody>
   </v-table>
+
+  <!-- <ul>
+    <li v-for="product in productStore.products" :key="product.code">
+      {{ product.name }}
+    </li>
+  </ul> -->
 
   <!-- <button type="button" class="btn btn-info" @click="getData">Get Products</button> -->
 </template>
@@ -37,8 +47,13 @@
 <script>
 import ProductDialog from "@/components/ProductDialog.vue";
 import ConfirmDlg from "@/components/ConfirmDlg.vue";
+import { useProductStore } from "../stores/ProductStore";
 
 export default {
+  setup() {
+    const productStore = useProductStore();
+    return { productStore };
+  },
   // eslint-disable-next-line vue/no-unused-components
   components: {
     ProductDialog,
@@ -66,26 +81,24 @@ export default {
   mounted() {
     this.$axios
       .get("products")
-      .then((x) => (this.items = x.data))
-      .catch((error) => console.log(error));
+      //.then((x) => (this.items = x.data))
+      .then((x) => this.productStore.fill(x.data));
   },
   methods: {
     deleteProduct(recordId) {
       if (recordId !== 0) {
         this.$axios
           .delete("products/" + recordId)
-          .then(this.$router.push("/"))
-          .catch((e) => {
-            this.errors.push(e);
-          });
+          .then(() => this.productStore.deleteProduct(recordId))
+          .then(this.$router.push("/"));
       }
     },
   },
 };
 </script>
 <style>
-#app > div > div > main > div > div.v-table.v-theme--light.v-table--density-compact > div > table > thead > tr > th{
-  font-weight:900;
+#app > div > div > main > div > div.v-table.v-theme--light.v-table--density-compact > div > table > thead > tr > th {
+  font-weight: 900;
 }
 i {
   cursor: pointer;
@@ -98,6 +111,6 @@ i {
 
 .row-bg:hover {
   /* `!important` is necessary here because Vuetify overrides this */
-  background-color: #fafafa; 
+  background-color: #fafafa;
 }
 </style>

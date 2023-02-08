@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Product 1",
+        "code": "1234567890"
+    },
+    {
+      "name": "Product 2",
+      "code": "1234567892"
+    },
+    {
+      "name": "Product 3",
+      "code": "1234567890"
+    },
+    {
+        "name": "Product 4",
+        "code": "1234567894"
+    },
+    {
+        "name": "Product 5",
+        "code": "1234567895"
+    }
+]

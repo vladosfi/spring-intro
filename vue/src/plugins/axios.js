@@ -1,11 +1,5 @@
 import axios from 'axios'
 
-// axios.interceptors.request.use((request) => {
-//   //request.headers.Authorization = userStore.token
-//   console.log("Adding token to header", request);
-// });
-
-
 
 export default {
     install: (app, options) => {

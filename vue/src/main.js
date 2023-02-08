@@ -1,12 +1,15 @@
 import App from "./App.vue";
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import router from "./router";
 import axios from "./plugins/axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
-import Toast, { TYPE } from "vue-toastification";
+import Toast, { TYPE, POSITION } from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+
+
 
 // Vuetify
 import "vuetify/styles";
@@ -29,27 +32,25 @@ const options = {
     [TYPE.ERROR]: {
       timeout: 10000,
       closeButton: false,
+      position: POSITION.BOTTOM_RIGHT,
     },
     [TYPE.SUCCESS]: {
       timeout: 3000,
       hideProgressBar: true,
+      position: POSITION.BOTTOM_RIGHT,
+    },
+    [TYPE.INFO]: {
+      timeout: 3000,
+      hideProgressBar: true,
+      position: POSITION.BOTTOM_RIGHT,
     },
   },
 };
-
+const pinia = createPinia();
 const app = createApp(App);
 
-app.use(router).use(vuetify).use(Toast, options).use(axios, {
+app.use(router).use(pinia).use(vuetify).use(Toast, options).use(axios, {
   baseUrl: "http://localhost:8081/api/",
 });
 
 app.mount("#app");
-
-// createApp(App)
-//   .use(router)
-//   .use(vuetify)
-//   .use(axios, {
-//     //baseUrl: "https://jsonplaceholder.typicode.com/",
-//     baseUrl: "http://localhost:8081/api/",
-//   })
-//   .mount("#app");
