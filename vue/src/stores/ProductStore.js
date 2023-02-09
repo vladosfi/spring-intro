@@ -13,7 +13,7 @@ export const useProductStore = defineStore("ProductStore", {
     },
   },
   actions: {
-    async fill(products) {
+    fill(products) {
       this.products = products;
       //this.products = (await import("@/data/products.json")).default;
     },

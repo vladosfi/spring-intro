@@ -46,7 +46,7 @@ const options = {
     },
   },
 };
-const pinia = createPinia();
+const pinia = createPinia()
 const app = createApp(App);
 
 app.use(router).use(pinia).use(vuetify).use(Toast, options).use(axios, {
