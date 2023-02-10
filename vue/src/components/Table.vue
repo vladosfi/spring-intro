@@ -48,11 +48,13 @@
 import ProductDialog from "@/components/ProductDialog.vue";
 import ConfirmDlg from "@/components/ConfirmDlg.vue";
 import { useProductStore } from "../stores/ProductStore";
+import { useToast } from "vue-toastification";
 
 export default {
   setup() {
     const productStore = useProductStore();
-    return { productStore };
+    const toast = useToast();
+    return { productStore, toast };
   },
   // eslint-disable-next-line vue/no-unused-components
   components: {
@@ -63,9 +65,6 @@ export default {
   name: "Table",
   data() {
     return {
-      //  getData() {
-      //    this.$axios.get("users").then((x) => console.log(x.data));
-      // }
       items: {},
       itemId: 0,
       confirmDialogContent: {
@@ -79,19 +78,19 @@ export default {
     };
   },
   mounted() {
-    this.$axios
-      .get("products")
-      //.then((x) => (this.items = x.data))
-      .then((x) => this.productStore.fill(x.data));
+    // this.$axios.get("products").then((x) => (this.items = x.data));
+    this.productStore.fill();
   },
-  methods: {
+  methods: {    
     deleteProduct(recordId) {
       if (recordId !== 0) {
-        this.$axios
-          .delete("products/" + recordId)
-          .then(() => this.productStore.deleteProduct(recordId))
-          .then(this.$router.push("/"));
+        this.productStore
+          .deleteProduct(recordId)
+          .then(this.toast.info("Product was removed!"));
       }
+    },
+    toaster(text) {
+      this.toast.error(text);
     },
   },
 };

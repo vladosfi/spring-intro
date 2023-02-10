@@ -45,7 +45,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn  color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
         <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
@@ -56,6 +56,7 @@
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, numeric, maxLength } from "@vuelidate/validators";
 import { useProductStore } from "../stores/ProductStore";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "ProductDialog",
@@ -70,7 +71,8 @@ export default {
   },
   setup() {
     const productStore = useProductStore();
-    return { v$: useVuelidate(), productStore };
+    const toast = useToast();
+    return { v$: useVuelidate(), productStore, toast };
   },
   data: () => ({
     dialog: false,
@@ -99,27 +101,35 @@ export default {
   },
   methods: {
     createProduct() {
-      this.$axios
-        .post("products/", this.form)
-        .then((result) => this.productStore.createProduct(result.data))
+      this.productStore
+        .createProduct(this.form)
         .then((this.dialog = false))
-        .then(this.$router.push("/"));
+        .then(this.toaster("Тhe product has been added"));
+      // this.$axios
+      //   .post("products/", this.form)
+      //   .then((result) => this.productStore.createProduct(result.data))
+      //   .then((this.dialog = false))
+      //   .then(this.$router.push("/"));
       // .catch((e) => {
       //   this.errors.push(e);
       // })
     },
     updateProduct() {
-      this.$axios
-        .put("products/" + this.form.id, this.form)
-        .then((result) => this.productStore.updateProduct(result.data))
+      this.productStore
+        .updateProduct(this.form)
         .then((this.dialog = false))
-        .then(() => this.$router.push("/"));
+        .then(this.toaster("Тhe the product has been updated"));
+    },
+    toaster(text) {
+      this.toast.info(text);
     },
   },
   watch: {
     dialog(visible) {
       if (this.itemId && visible) {
-        this.$axios.get("products/" + this.itemId).then((x) => (this.form = x.data));
+        this.productStore.getById(this.itemId);
+        this.form = this.productStore.getProductById(this.itemId);
+        //this.$axios.get("products/" + this.itemId).then((x) => (this.form = x.data));
       }
     },
   },

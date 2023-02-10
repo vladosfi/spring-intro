@@ -24,7 +24,7 @@ export default {
     return { toast };
   },
   methods: {
-    testToast(text) {
+    toaster(text) {
       //this.toast("I'm a toast1111!");
       this.toast.error(text);
     },
@@ -71,19 +71,19 @@ export default {
           switch (error.response?.status) {
             case 400:
               //this.testToast(error.response.data.message);
-              this.testToast("Something went wrong!");
+              this.toaster("Something went wrong!");
               break;
             case 401:
-              this.testToast("Something went wrong!");
+              this.toaster("Something went wrong!");
               break;
             case 403:
-              this.testToast("Something went wrong!");
+              this.toaster("Something went wrong!");
               break;
             case 404:
-              this.testToast("Something went wrong!");
+              this.toaster("Something went wrong!");
               break;
             case 500:
-              this.testToast("Something went wrong!");
+              this.toaster("Something went wrong!");
           }
         }
       }

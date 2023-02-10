@@ -1,5 +1,5 @@
 import App from "./App.vue";
-import { createApp } from "vue";
+import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
 import router from "./router";
 import axios from "./plugins/axios";
@@ -48,6 +48,10 @@ const options = {
 };
 const pinia = createPinia()
 const app = createApp(App);
+
+pinia.use(({ store }) => {
+  store.$router = markRaw(router);
+});
 
 app.use(router).use(pinia).use(vuetify).use(Toast, options).use(axios, {
   baseUrl: "http://localhost:8081/api/",
