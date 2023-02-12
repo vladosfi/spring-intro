@@ -45,7 +45,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
         <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
@@ -104,7 +104,8 @@ export default {
       this.productStore
         .createProduct(this.form)
         .then((this.dialog = false))
-        .then(this.toaster("Тhe product has been added"));
+        .then(this.toaster("Тhe product has been added"))
+        .catch((e) => console.log(e));
       // this.$axios
       //   .post("products/", this.form)
       //   .then((result) => this.productStore.createProduct(result.data))

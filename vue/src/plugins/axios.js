@@ -5,6 +5,7 @@ import axios from 'axios'
 //   console.log("Adding token to header", request);
 // });
 
+
 export default {
     install: (app, options) => {
         app.config.globalProperties.$axios = axios.create({

@@ -58,3 +58,4 @@ app.use(router).use(pinia).use(vuetify).use(Toast, options).use(axios, {
 });
 
 app.mount("#app");
+
