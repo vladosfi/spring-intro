@@ -2,8 +2,7 @@
   <v-dialog max-width="50%" v-model="dialog">
     <template v-slot:activator="{ props }">
       <!-- <v-btn color="primary" v-bind="props"> Open Dialog </v-btn> -->
-
-      <v-btn flat v-bind="props" v-if="!itemId"> Add Product </v-btn>
+      <v-btn v-bind="props" v-if="!itemId"> Add Product </v-btn>
       <!-- <a :href="" v-bind="props" v-else>
           {{ itemId }}
         </a> -->
@@ -45,7 +44,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn  color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
         <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
@@ -56,6 +55,7 @@
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, numeric, maxLength } from "@vuelidate/validators";
 import { useProductStore } from "../stores/ProductStore";
+import Api from "@/services/ApiService";
 import { useToast } from "vue-toastification";
 
 export default {
@@ -70,8 +70,8 @@ export default {
     itemCode: String,
   },
   setup() {
-    const productStore = useProductStore();
     const toast = useToast();
+    const productStore = useProductStore();
     return { v$: useVuelidate(), productStore, toast };
   },
   data: () => ({
@@ -100,36 +100,55 @@ export default {
     };
   },
   methods: {
-    createProduct() {
-      this.productStore
-        .createProduct(this.form)
-        .then((this.dialog = false))
-        .then(this.toaster("Тhe product has been added"))
-        .catch((e) => console.log(e));
-      // this.$axios
-      //   .post("products/", this.form)
-      //   .then((result) => this.productStore.createProduct(result.data))
-      //   .then((this.dialog = false))
-      //   .then(this.$router.push("/"));
-      // .catch((e) => {
-      //   this.errors.push(e);
-      // })
+    async createProduct() {
+      await Api.posts
+        .create(this.form)
+        .then((x) => {
+          this.productStore.createProduct(x);
+          this.dialog = false;
+          this.toast.info("Тhe product has been added");
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log(error.response.data.apierror);
+          var errorMessage = error.response.data.apierror.message + "\n";
+          if (error.response.data.apierror.subErrors !== undefined) {
+            error.response.data.apierror.subErrors.forEach(subErr => {
+              errorMessage += "Message: " + subErr.message + "\n";
+            });
+            
+          }
+          this.toast.error(errorMessage);  
+        });
+
     },
-    updateProduct() {
-      this.productStore
-        .updateProduct(this.form)
-        .then((this.dialog = false))
-        .then(this.toaster("Тhe the product has been updated"));
-    },
-    toaster(text) {
-      this.toast.info(text);
+    async updateProduct() {
+      await Api.posts
+        .update(this.form.id, this.form)
+        .then(() => {
+          this.productStore.updateProduct(this.form);
+          this.$router.push("/");
+          this.toast.info("Тhe the product has been updated");
+          this.dialog = false;
+        })
+        .catch((error) => this.toast.error(error.response.data.apierror.message));
     },
   },
   watch: {
-    dialog(visible) {
+    dialog(visible) {      
+      this.form = {
+        id: "",
+        name: "",
+        code: "",
+      };
+
       if (this.itemId && visible) {
-        this.productStore.getById(this.itemId);
-        this.form = this.productStore.getProductById(this.itemId);
+         Api.posts
+          .get(this.itemId)
+          .then((x) => {
+            this.form = this.productStore.getProductById(x.data.id);
+          })
+          .catch((error) => this.toast.error(error.response.data.apierror.message));
         //this.$axios.get("products/" + this.itemId).then((x) => (this.form = x.data));
       }
     },

@@ -1,8 +1,8 @@
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar class="flex text-center" title="Product List">
-              <div class="d-flex flex-row-reverse"><ProductDialog :dialogContent="dialogContent" /></div>
+      <v-app-bar class="d-flex justify-space-evenly mb-6" title="Product List">
+            <div><ProductDialog :dialogContent="dialogContent" /></div>
       </v-app-bar>
 
       <v-main style="min-height: 300px">

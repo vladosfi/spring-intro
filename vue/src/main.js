@@ -53,9 +53,14 @@ pinia.use(({ store }) => {
   store.$router = markRaw(router);
 });
 
-app.use(router).use(pinia).use(vuetify).use(Toast, options).use(axios, {
-  baseUrl: "http://localhost:8081/api/",
-});
+app
+  .use(router)
+  .use(pinia)
+  .use(vuetify)
+  .use(Toast, options)
+  .use(axios, {
+    baseUrl: "http://localhost:8081/api/",
+  });
 
 app.mount("#app");
 

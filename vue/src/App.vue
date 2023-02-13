@@ -11,7 +11,6 @@
 
 <script>
 import NavMenu from "./components/NavMenu.vue";
-import { useToast } from "vue-toastification";
 
 export default {
   name: "App",
@@ -19,15 +18,8 @@ export default {
     NavMenu,
   },
   setup() {
-    const toast = useToast();
-    // Make it available inside methods
-    return { toast };
   },
   methods: {
-    toaster(text) {
-      //this.toast("I'm a toast1111!");
-      this.toast.error(text);
-    },
   },
   mounted() {
   },
