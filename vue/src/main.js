@@ -2,12 +2,12 @@ import App from "./App.vue";
 import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
 import router from "./router";
-import axios from "./plugins/axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import Toast, { TYPE, POSITION } from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+import axiosPlugin from "@/plugins/axios";
 
 
 
@@ -53,14 +53,12 @@ pinia.use(({ store }) => {
   store.$router = markRaw(router);
 });
 
-app
-  .use(router)
-  .use(pinia)
-  .use(vuetify)
-  .use(Toast, options)
-  .use(axios, {
-    baseUrl: "http://localhost:8081/api/",
-  });
+
+app.use(router).use(pinia).use(vuetify).use(Toast, options).use(axiosPlugin, {
+  baseUrl: "http://localhost:8081/api/",
+  token: "myToken",
+});
+
 
 app.mount("#app");
 
