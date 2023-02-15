@@ -44,7 +44,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-        <v-btn  color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
+        <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="createProduct" v-if="!itemId"> Add </v-btn>
         <v-btn :disabled="v$.form.$invalid" color="blue-darken-1" variant="text" @click="updateProduct" v-else> Save </v-btn>
       </v-card-actions>
     </v-card>
@@ -55,7 +55,6 @@
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, numeric, maxLength } from "@vuelidate/validators";
 import { useProductStore } from "../stores/ProductStore";
-import Api from "@/services/ApiService";
 import { useToast } from "vue-toastification";
 
 export default {
@@ -101,41 +100,43 @@ export default {
   },
   methods: {
     async createProduct() {
-      await Api.posts
-        .create(this.form)
+      await this.$http
+        .post("products", this.form)
         .then((x) => {
           this.productStore.createProduct(x);
           this.dialog = false;
           this.toast.info("Тhe product has been added");
           this.$router.push("/");
         })
-        .catch((error) => {
-          console.log(error.response.data.apierror);
-          var errorMessage = error.response.data.apierror.message + "\n";
-          if (error.response.data.apierror.subErrors !== undefined) {
-            error.response.data.apierror.subErrors.forEach(subErr => {
-              errorMessage += "Message: " + subErr.message + "\n";
-            });
-            
-          }
-          this.toast.error(errorMessage);  
-        });
-
+        .catch((error) => this.toast.error(error));
+        // .catch((error) => {
+        //   console.log(error.response.data.apierror);
+        //   var errorMessage = error.response.data.apierror.message + "\n";
+        //   if (error.response.data.apierror.subErrors !== undefined) {
+        //     error.response.data.apierror.subErrors.forEach((subErr) => {
+        //       errorMessage += "Message: " + subErr.message + "\n";
+        //     });
+        //   }
+        //   this.toast.error(errorMessage);
+        // });
     },
     async updateProduct() {
-      await Api.posts
-        .update(this.form.id, this.form)
+      await this.$http
+        .put("products/" + this.form.id, this.form)
         .then(() => {
           this.productStore.updateProduct(this.form);
           this.$router.push("/");
           this.toast.info("Тhe the product has been updated");
           this.dialog = false;
         })
-        .catch((error) => this.toast.error(error.response.data.apierror.message));
+        .catch((error) => this.toast.error(error));
     },
   },
+  unmounted() {
+    this.productStore.getProductById(this.form);
+  },
   watch: {
-    dialog(visible) {      
+    dialog(visible) {
       this.form = {
         id: "",
         name: "",
@@ -143,12 +144,12 @@ export default {
       };
 
       if (this.itemId && visible) {
-         Api.posts
-          .get(this.itemId)
+        this.$http
+          .get("products/" + this.itemId)
           .then((x) => {
-            this.form = this.productStore.getProductById(x.data.id);
+            this.form = x.data;
           })
-          .catch((error) => this.toast.error(error.response.data.apierror.message));
+          .catch((error) => this.toast.error(error));
         //this.$axios.get("products/" + this.itemId).then((x) => (this.form = x.data));
       }
     },

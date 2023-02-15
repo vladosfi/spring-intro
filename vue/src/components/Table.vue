@@ -49,7 +49,8 @@ import ProductDialog from "@/components/ProductDialog.vue";
 import ConfirmDlg from "@/components/ConfirmDlg.vue";
 import { useProductStore } from "../stores/ProductStore";
 import { useToast } from "vue-toastification";
-import Api from "@/services/ApiService";
+//import Api from "@/services/ApiService";
+
 
 export default {
   setup() {
@@ -79,23 +80,22 @@ export default {
     };
   },
   mounted() {
-    Api.posts
-      .list()
+    this.$http.get('products')
       .then((x) => this.productStore.fill(x))
-      .catch((error) => this.toast.error(error.response.data.apierror.message));
-    // this.$axios.get("products").then((x) => (this.items = x.data));
+      .catch((error) => this.toast.error(error));
   },
   methods: {
     deleteProduct(productId) {
-      Api.posts
-        .remove(productId)
+      this
+        .$http
+        .delete("products/" + productId)
         .then(() => {
           if (productId !== 0) {
             this.productStore.deleteProduct(productId);
             this.toast.info("Product was removed!");
           }
         })
-        .catch((error) => this.toast.error(error.response.data.apierror.message));
+        .catch((error) => this.toast.error(error));
     },
     toaster(text) {
       this.toast.error(text);

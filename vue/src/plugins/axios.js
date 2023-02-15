@@ -1,52 +1,3 @@
-// import axios from "axios";
-
-
-// const axiosPlugin = {
-//   install: function (Vue, options) {
-//     // Check that the Vue object is defined
-//     if (!Vue.prototype) {
-//       Vue.prototype = {};
-//     }
-//     // Set the $http property on the Vue prototype
-//     Vue.prototype.$http = axios.create({
-//       baseURL: options.baseUrl,
-//       headers: {
-//         Authorization: options.token ? `Bearer ${options.token}` : "",
-//       },
-//     });
-//   },
-// };
-
-// export default axiosPlugin;
-
-// // export default {
-// //   install: function (Vue, options) {
-// //     // Check that the Vue object is defined
-// //     if (!Vue.prototype) {
-// //       Vue.prototype = {};
-// //     }
-
-// //     Vue.prototype.$http = axios.create({
-// //       baseURL: options.baseUrl,
-// //       headers: {
-// //         Authorization: options.token ? `Bearer ${options.token}` : "",
-// //       },
-// //     });
-// //   },
-// // };
-
-// // export default {
-// //     install: (app, options) => {
-// //         app.config.globalProperties.$axios = axios.create({
-// //             baseURL: options.baseUrl,
-// //             headers: {
-// //                 Authorization: options.token ? `Bearer ${options.token}` : '',
-// //             }
-// //         })
-// //     }
-// // }
-
-
 import axios from "axios";
 import VueAxios from "vue-axios";
 
@@ -59,7 +10,50 @@ const AxiosPlugin = {
         Authorization: options.token ? `Bearer ${options.token}` : "",
       },
     });
+    // Add response interceptor
+    app.config.globalProperties.$http.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      function (error) {
+        let errorMessage = error;
+        // Handle error with status code
+        if (error.response) {
+          switch (error.response?.status) {
+            case 400:
+              errorMessage = getApiErrorDetails(error);
+              break;
+            case 401:
+              window.location = "/login";
+              break;
+            case 403:
+              errorMessage = getApiErrorDetails(error);
+              break;
+            case 404:
+              errorMessage = getApiErrorDetails(error);
+              break;
+            case 500:
+              errorMessage = getApiErrorDetails(error);
+          }
+        } else {
+          // Handle network errors here
+          return "Network Error!\n" + error;
+        }
+        return Promise.reject(errorMessage);
+      }
+    );
   },
+};
+
+const getApiErrorDetails = (error) => {
+  let errorDetails = error.response.data.apierror.message + "\n";
+  if (error.response.data.apierror.subErrors !== undefined) {
+    error.response.data.apierror.subErrors.forEach((subErr) => {
+      errorDetails += "Message: " + subErr.message + "\n";
+    });
+  }
+
+  return errorDetails;
 };
 
 export default AxiosPlugin;
