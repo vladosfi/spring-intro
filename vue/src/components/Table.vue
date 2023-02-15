@@ -13,18 +13,10 @@
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>
-          <!-- <router-link :to="'/product/' + item.id">{{ item.code }}</router-link> -->
-          <!-- <ProductDialog :dialogContent="dialogContent" :itemCode="item.code" :itemId="item.id" /> -->
           {{ item.code }}
         </td>
         <td>
           <ProductDialog :dialogContent="productDialogContent" :itemCode="item.code" :itemId="item.id" />
-          <!-- <v-tooltip text="Edit" location="top">
-            <template v-slot:activator="{ props }">
-              <v-icon color="blue-darken-2" left dark v-bind="props">mdi-note-edit</v-icon>
-            </template>
-          </v-tooltip> -->
-
           <ConfirmDlg :itemId="item.id" :dialogContent="this.confirmDialogContent" @agree="deleteProduct($event)" />
         </td>
       </tr>
@@ -35,13 +27,6 @@
     </tbody>
   </v-table>
 
-  <!-- <ul>
-    <li v-for="product in productStore.products" :key="product.code">
-      {{ product.name }}
-    </li>
-  </ul> -->
-
-  <!-- <button type="button" class="btn btn-info" @click="getData">Get Products</button> -->
 </template>
 
 <script>
@@ -49,7 +34,7 @@ import ProductDialog from "@/components/ProductDialog.vue";
 import ConfirmDlg from "@/components/ConfirmDlg.vue";
 import { useProductStore } from "../stores/ProductStore";
 import { useToast } from "vue-toastification";
-//import Api from "@/services/ApiService";
+
 
 
 export default {

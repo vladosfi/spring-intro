@@ -33,7 +33,7 @@ const AxiosPlugin = {
               errorMessage = getApiErrorDetails(error);
               break;
             case 500:
-              errorMessage = getApiErrorDetails(error);
+              errorMessage = "Error code: " + 500 + "\nInternal Server Error";
           }
         } else {
           // Handle network errors here
@@ -47,7 +47,7 @@ const AxiosPlugin = {
 
 const getApiErrorDetails = (error) => {
   let errorDetails = error.response.data.apierror.message + "\n";
-  if (error.response.data.apierror.subErrors !== undefined) {
+  if (error.response.data.apierror.subErrors) {
     error.response.data.apierror.subErrors.forEach((subErr) => {
       errorDetails += "Message: " + subErr.message + "\n";
     });

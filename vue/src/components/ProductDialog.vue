@@ -39,7 +39,7 @@
             </v-col>
           </v-row>
         </v-container>
-        <small>*indicates required field</small>
+        <!-- <small>*indicates required field</small> -->
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -53,7 +53,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, numeric, maxLength } from "@vuelidate/validators";
+import { required, minLength, maxLength } from "@vuelidate/validators";
 import { useProductStore } from "../stores/ProductStore";
 import { useToast } from "vue-toastification";
 
@@ -93,7 +93,6 @@ export default {
           required,
           min: minLength(10),
           max: maxLength(10),
-          numeric,
         },
       },
     };
@@ -109,16 +108,6 @@ export default {
           this.$router.push("/");
         })
         .catch((error) => this.toast.error(error));
-        // .catch((error) => {
-        //   console.log(error.response.data.apierror);
-        //   var errorMessage = error.response.data.apierror.message + "\n";
-        //   if (error.response.data.apierror.subErrors !== undefined) {
-        //     error.response.data.apierror.subErrors.forEach((subErr) => {
-        //       errorMessage += "Message: " + subErr.message + "\n";
-        //     });
-        //   }
-        //   this.toast.error(errorMessage);
-        // });
     },
     async updateProduct() {
       await this.$http
@@ -136,7 +125,7 @@ export default {
     this.productStore.getProductById(this.form);
   },
   watch: {
-    dialog(visible) {
+    async dialog(visible) {
       this.form = {
         id: "",
         name: "",
@@ -144,13 +133,12 @@ export default {
       };
 
       if (this.itemId && visible) {
-        this.$http
+        await this.$http
           .get("products/" + this.itemId)
           .then((x) => {
             this.form = x.data;
           })
           .catch((error) => this.toast.error(error));
-        //this.$axios.get("products/" + this.itemId).then((x) => (this.form = x.data));
       }
     },
   },
@@ -158,11 +146,11 @@ export default {
 </script>
 
 <style>
-#app > div > div > main > div > div.d-flex.flex-row-reverse > button > span.v-btn__content {
+/* #app > div > div > main > div > div.d-flex.flex-row-reverse > button > span.v-btn__content {
   color: blue;
 }
 
 #app > div > div > main > div > div.d-flex.flex-row-reverse > button {
   background-color: #fafafa;
-}
+} */
 </style>

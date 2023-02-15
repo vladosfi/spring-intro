@@ -16,7 +16,7 @@ public class ProductEntity {
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 
-    @Column(name = "code", unique=true)
+    @Column(name = "code", length = 10, unique=true)
     @Size(min = 10, max = 10, message = "Code must be 10 characters long")
     private String code;
 

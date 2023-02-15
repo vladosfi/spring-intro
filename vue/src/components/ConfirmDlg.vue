@@ -42,8 +42,8 @@ export default {
   },
   methods: {
     agree() {
-      this.dialog = false;
       this.$emit("agree", this.itemId);
+      this.dialog = false;
     },
   },
 };
