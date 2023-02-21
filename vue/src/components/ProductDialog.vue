@@ -121,9 +121,6 @@ export default {
         .catch((error) => this.toast.error(error));
     },
   },
-  unmounted() {
-    this.productStore.getProductById(this.form);
-  },
   watch: {
     async dialog(visible) {
       this.form = {
@@ -139,6 +136,8 @@ export default {
             this.form = x.data;
           })
           .catch((error) => this.toast.error(error));
+      } else if (!visible) {
+        this.productStore.getProductById(this.form);
       }
     },
   },
