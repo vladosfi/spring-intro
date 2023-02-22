@@ -1,13 +1,8 @@
 <template>
   <v-dialog max-width="50%" v-model="dialog">
     <template v-slot:activator="{ props }">
-      <!-- <v-btn color="primary" v-bind="props"> Open Dialog </v-btn> -->
       <v-btn v-bind="props" v-if="!itemId"> Add Product </v-btn>
-      <!-- <a :href="" v-bind="props" v-else>
-          {{ itemId }}
-        </a> -->
       <span v-bind="props" v-else>
-        <!-- <v-btn  color="warning" v-bind="props"> {{dialogContent.btnName}} </v-btn> -->
         <span v-bind="props">
           <v-tooltip text="Edit" location="top">
             <template v-slot:activator="{ props }">
@@ -122,6 +117,7 @@ export default {
     },
   },
   watch: {
+    
     async dialog(visible) {
       this.form = {
         id: "",
